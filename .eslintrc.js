@@ -35,6 +35,7 @@ module.exports = {
     'react/prop-types': [0],
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
+    'arrow-parens': ['error', 'as-needed'],
     'object-curly-newline': ['error', { consistent: true }],
     'arrow-body-style': ['error', 'as-needed'],
     'implicit-arrow-linebreak': 'off',
