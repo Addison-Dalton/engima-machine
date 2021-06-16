@@ -1,29 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { handleRotorRotation } from '../../services/machine/machine-slice';
+import { selectOutputKey } from '../../services/machine/machine-selector';
+import { useMountState } from '../../services/enhance';
+import { getAlphabetKeyNum } from '../../services/utils/keys';
 
 import { OutputKeyboard } from './output';
 
 export const KeyBoardController = () => {
-  const [activeKey, setActiveKey] = useState<string>('');
+  const outputKey = useSelector(selectOutputKey);
+  const hasMounted = useMountState();
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    // don't fire on initial render
+    if (!hasMounted) return undefined;
     const handleKeyDown = (e: KeyboardEvent) => {
-      // don't allow multiple keys to be considered "active"
-      if (activeKey !== '') return;
-      setActiveKey(e.key);
+      const keyNum = getAlphabetKeyNum(e.key);
+      if (keyNum < 0) return;
+      dispatch(handleRotorRotation(keyNum));
     };
-    const handleKeyUp = () => setActiveKey('');
 
     window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
 
     const unsubscribe = () => {
       window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
     };
     return unsubscribe;
-  }, [activeKey, setActiveKey]);
+  }, [hasMounted]);
 
   return (
-    <OutputKeyboard activeKey={activeKey} />
+    <OutputKeyboard activeKey={outputKey} />
   );
 };

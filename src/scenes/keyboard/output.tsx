@@ -7,9 +7,9 @@ type Props = {
   activeKey: string;
 }
 
-const row1 = 'qwertyuiop'.split('');
-const row2 = 'asdfghjkl'.split('');
-const row3 = 'zxcvbnm'.split('');
+const row1 = 'QWERTYUIOP'.split('');
+const row2 = 'ASDFGHJKL'.split('');
+const row3 = 'ZXCVBNM'.split('');
 
 const $Container = styled.div`
   width: 100%;
