@@ -14,7 +14,7 @@ const $Header = styled.h1`
 
 const App = () => (
   <$Container>
-    <$Header>{'Engima'}</$Header>
+    <$Header>{'Enigma'}</$Header>
     <KeyBoardController />
     <InputOutputTextArea />
   </$Container>
