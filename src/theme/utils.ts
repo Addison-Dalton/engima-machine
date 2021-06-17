@@ -1,4 +1,4 @@
-export const themeModifier = (themeProp: string, modifier: number) => {
+export const themeModifier = (themeProp: string, modifier: number = 1) => {
   const regex = /^(^-?\d+(?:\.\d+)?)(.*)$/;
   const match = themeProp.match(regex);
   if (!match) return themeProp;

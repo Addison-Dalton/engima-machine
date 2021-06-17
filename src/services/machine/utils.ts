@@ -55,8 +55,11 @@ const encode = (slots: Slot[], initialKeyNum: number, isSecondPass?: boolean) =>
   return encodedKeyNum;
 };
 
-export const handleEncoding = (slots: Slot[], initialKeyNum: number) => {
-  const firstPassEncodedKeyNum = encode(slots, initialKeyNum);
+export const handleEncoding = (slots: Slot[], initialKey: string) => {
+  // don't encode spaces
+  if (initialKey === ' ') return ' ';
+
+  const firstPassEncodedKeyNum = encode(slots, getAlphabetKeyNum(initialKey));
   const secondPassSlots = slots.reverse();
   secondPassSlots.shift(); // remove the reflector as it was used in the first pass.
 
@@ -65,4 +68,23 @@ export const handleEncoding = (slots: Slot[], initialKeyNum: number) => {
   const secondPassEncodedKeyNum = encode(slots, firstPassEncodedKeyNum, true);
   console.log('second pass num: ', secondPassEncodedKeyNum);
   return getAlphabetKeyByNum(secondPassEncodedKeyNum);
+};
+
+export const handleRotation = (slots: Slot[]) => {
+  slots.some((slot, idx) => {
+    // reflectors don't have positions; so return
+    if (slot.rotor.type === 'reflector') return true;
+
+    // calculate slots new position
+    const newPosition = slot.position >= 25 ? 0 : slot.position + 1;
+    slots[idx].position = newPosition;
+
+    return !!(slot.rotor.turnOver !== slot.position);
+  });
+};
+
+export const resetSlots = (slots: Slot[]) => {
+  slots.forEach(slot => {
+    slot.position = 0;
+  });
 };

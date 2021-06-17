@@ -13,3 +13,8 @@ export const selectOutputKey = createSelector(
   [getMachine],
   machine => machine.outputKey
 );
+
+export const selectTotalOutput = createSelector(
+  [getMachine],
+  machine => machine.totalOutput
+);

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { rotorI, rotorII, rotorIII, reflectorUKWB } from '../../objects/rotors/rotors';
-import { handleEncoding } from './utils';
+import { handleEncoding, handleRotation, resetSlots } from './utils';
 
 const initialState: MachineStore = {
   slots: [
@@ -23,43 +23,64 @@ const initialState: MachineStore = {
       position: 0
     }
   ],
-  outputKey: ''
+  outputKey: '',
+  totalInput: '',
+  totalOutput: ''
 };
 
 const slotSlice = createSlice({
   name: 'handleSlots',
   initialState,
   reducers: {
-    handleRotorRotation(state, action: PayloadAction<number>) {
+    handleRotorRotation(state, action: PayloadAction<string>) {
       const { slots } = state;
 
       // handles positioning of rotors
-      slots.some((slot, idx) => {
-        // reflectors don't have positions; so return
-        if (slot.rotor.type === 'reflector') return true;
-
-        // calculate slots new position
-        const newPosition = slot.position >= 25 ? 0 : slot.position + 1;
-        slots[idx].position = newPosition;
-
-        // TODO keeping for now, might could use for ring settings
-        // const newRotorKeys = slot.rotor.keys;
-        // const firstKey = newRotorKeys.shift();
-        // newRotorKeys.push(firstKey || '');
-        // slots[idx].rotor.keys = newRotorKeys;
-
-        return !!(slot.rotor.turnOver !== slot.position);
-      });
+      handleRotation(slots);
 
       // handles encoding
+      const inputKey = action.payload;
       // passing copy of array to avoid the function making changes to state array.
-      state.outputKey = handleEncoding([...slots], action.payload);
+      const outputKey = handleEncoding([...slots], inputKey);
+
+      state.totalInput += inputKey;
+      state.outputKey = outputKey;
+      state.totalOutput += outputKey;
+    },
+    handleNonEncodableKeys(state, action: PayloadAction<NonEncodableKey>) {
+      const inputKey = action.payload.toUpperCase();
+      const { slots } = state;
+
+      switch (inputKey) {
+        case ' ':
+          state.totalOutput += ' ';
+          break;
+        case 'BACKSPACE': {
+          // state.totalInput = action.payload.inputText;
+          // resetSlots(slots);
+          // const encodedKeys = state.totalInput.split('').map(key => {
+          //   handleRotation(slots);
+          //   return handleEncoding([...slots], key);
+          // });
+
+          // state.outputKey = encodedKeys[encodedKeys.length - 1];
+          // state.totalOutput = encodedKeys.join();
+          break;
+        }
+        case 'DELETE':
+          state.totalInput = state.totalInput.slice(0, -1);
+          state.totalOutput = state.totalOutput.slice(0, -1);
+          break;
+        default:
+          break;
+      }
     }
   }
 });
 
 export const {
-  handleRotorRotation
+  handleRotorRotation,
+  handleNonEncodableKeys
 } = slotSlice.actions;
 
 export default slotSlice.reducer;
