@@ -56,7 +56,7 @@ export const InputOutputTextArea = () => {
 
   return (
     <$Container>
-      <p>{'Enter text below to be encypted or decrypt.'}</p>
+      <p>{'Enter text below to be encypted or decrypted.'}</p>
       <$TextAreaContainer>
         <$InputTextArea onChange={handleChange} spellCheck={false} placeholder={'Input text here...'} />
         <$OutputTextArea disabled value={totalOutput} placeholder={'Output here...'} />
