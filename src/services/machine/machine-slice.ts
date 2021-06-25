@@ -32,55 +32,49 @@ const slotSlice = createSlice({
   name: 'handleSlots',
   initialState,
   reducers: {
-    handleRotorRotation(state, action: PayloadAction<string>) {
+    handleSingleRotorRotation(state, action: PayloadAction<string>) {
       const { slots } = state;
+      const inputKey = action.payload;
+      state.totalInput += inputKey;
+
+      // don't rotate or encode for space.
+      if (inputKey === ' ') {
+        state.totalOutput += ' ';
+        return;
+      }
 
       // handles positioning of rotors
       handleRotation(slots);
 
       // handles encoding
-      const inputKey = action.payload;
       // passing copy of array to avoid the function making changes to state array.
       const outputKey = handleEncoding([...slots], inputKey);
 
-      state.totalInput += inputKey;
       state.outputKey = outputKey;
       state.totalOutput += outputKey;
     },
-    handleNonEncodableKeys(state, action: PayloadAction<NonEncodableKey>) {
-      const inputKey = action.payload.toUpperCase();
+    // used to encode entire input at once
+    handleFullRotorRotation(state, action: PayloadAction<string>) {
       const { slots } = state;
+      state.totalInput = action.payload.toUpperCase();
 
-      switch (inputKey) {
-        case ' ':
-          state.totalOutput += ' ';
-          break;
-        case 'BACKSPACE': {
-          // state.totalInput = action.payload.inputText;
-          // resetSlots(slots);
-          // const encodedKeys = state.totalInput.split('').map(key => {
-          //   handleRotation(slots);
-          //   return handleEncoding([...slots], key);
-          // });
+      resetSlots(slots);
+      const encodedKeys = state.totalInput.split('').map(key => {
+        // don't rotate or encode for space.
+        if (key === ' ') return ' ';
+        handleRotation(slots);
+        return handleEncoding([...slots], key);
+      });
 
-          // state.outputKey = encodedKeys[encodedKeys.length - 1];
-          // state.totalOutput = encodedKeys.join();
-          break;
-        }
-        case 'DELETE':
-          state.totalInput = state.totalInput.slice(0, -1);
-          state.totalOutput = state.totalOutput.slice(0, -1);
-          break;
-        default:
-          break;
-      }
+      state.outputKey = encodedKeys[encodedKeys.length - 1];
+      state.totalOutput = encodedKeys.join('');
     }
   }
 });
 
 export const {
-  handleRotorRotation,
-  handleNonEncodableKeys
+  handleSingleRotorRotation,
+  handleFullRotorRotation
 } = slotSlice.actions;
 
 export default slotSlice.reducer;

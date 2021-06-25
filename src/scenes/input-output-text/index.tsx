@@ -1,11 +1,11 @@
-import React, { useCallback, KeyboardEvent, ChangeEvent, useState } from 'react';
+import React, { useCallback, ChangeEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { themeModifier } from '../../theme/utils';
-import { getIsValidKey, getIsNonEncodableKey } from '../../services/input-output-text/utils';
-import { selectTotalOutput } from '../../services/machine/machine-selector';
-import { handleRotorRotation, handleNonEncodableKeys } from '../../services/machine/machine-slice';
+import { filterInvalidKeys, getIsSingleKeyChange } from '../../services/input-output-text/utils';
+import { selectTotalOutput, selectTotalInput } from '../../services/machine/machine-selector';
+import { handleSingleRotorRotation, handleFullRotorRotation } from '../../services/machine/machine-slice';
 
 const $Container = styled.div`
   p {
@@ -37,40 +37,29 @@ const $OutputTextArea = styled.textarea`
 `;
 
 export const InputOutputTextArea = () => {
-  const [inputText, setInputText] = useState('');
   const totalOutput = useSelector(selectTotalOutput);
+  const totalInput = useSelector(selectTotalInput);
   const dispatch = useDispatch();
 
   const handleChange = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
-    setInputText(e.target.value);
-  }, [setInputText]);
+    const filteredInput = filterInvalidKeys(e.target.value);
+    const singleKeyChange = getIsSingleKeyChange(totalInput, filteredInput);
 
-  const handleKeyInput = useCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
-    const inputKey = e.key;
-
-    // prevent invalid keys
-    const isValidKey = getIsValidKey(inputKey);
-    if (!isValidKey) {
-      e.preventDefault();
-      return;
-    }
-
-    // handle keys accordingly
-    if (getIsNonEncodableKey(inputKey)) {
-      const inputKeyTyped = inputKey as NonEncodableKey;
-
-      dispatch(handleNonEncodableKeys(inputKeyTyped));
+    if (singleKeyChange) {
+      // only take the last character; as it's the only new one.
+      dispatch(handleSingleRotorRotation(filteredInput.substr(-1)));
     } else {
-      dispatch(handleRotorRotation(inputKey));
+      // re-encode the entire input
+      dispatch(handleFullRotorRotation(filteredInput));
     }
-  }, [dispatch, inputText]);
+  }, [totalInput, dispatch]);
 
   return (
     <$Container>
-      <p>{'Enter text below to be encypted'}</p>
+      <p>{'Enter text below to be encypted or decrypt.'}</p>
       <$TextAreaContainer>
-        <$InputTextArea onKeyDown={handleKeyInput} />
-        <$OutputTextArea disabled value={totalOutput} />
+        <$InputTextArea onChange={handleChange} spellCheck={false} placeholder={'Input text here...'} />
+        <$OutputTextArea disabled value={totalOutput} placeholder={'Output here...'} />
       </$TextAreaContainer>
     </$Container>
   );

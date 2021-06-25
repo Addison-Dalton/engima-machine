@@ -18,3 +18,8 @@ export const selectTotalOutput = createSelector(
   [getMachine],
   machine => machine.totalOutput
 );
+
+export const selectTotalInput = createSelector(
+  [getMachine],
+  machine => machine.totalInput
+);

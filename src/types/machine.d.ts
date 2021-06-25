@@ -4,8 +4,3 @@ type MachineStore = {
   totalInput: string;
   totalOutput: string;
 }
-
-type NonEncodableKeysPayloadAction = {
-  inputKey: NonEncodableKey;
-  inputText: string;
-}
