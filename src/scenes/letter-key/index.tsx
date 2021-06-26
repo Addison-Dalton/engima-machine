@@ -40,8 +40,8 @@ const $Container = styled.div<$Props>`
   }
 
   @media screen and (max-width: ${p => p.theme.breakpoint.mobile}) {
-    width: ${p => themeModifier(p.theme.baseline, 0.75)};
-    height: ${p => themeModifier(p.theme.baseline, 0.75)};
+    width: ${p => themeModifier(p.theme.baseline, 0.85)};
+    height: ${p => themeModifier(p.theme.baseline, 0.85)};
   }
 `;
 
