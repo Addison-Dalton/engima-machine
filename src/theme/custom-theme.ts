@@ -10,5 +10,11 @@ export const theme: DefaultTheme = {
   font: {
     size: '1em'
   },
-  baseline: '24px'
+  baseline: '24px',
+  breakpoint: {
+    smallDesktop: '1200px',
+    tablet: '768px',
+    smallTablet: '580px',
+    mobile: '480px'
+  }
 };

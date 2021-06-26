@@ -15,16 +15,25 @@ const $Container = styled.div`
 
 const $TextAreaContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   padding: ${p => themeModifier(p.theme.baseline, 1)};
   
   textarea {
     flex: 1;
     font-size: ${p => themeModifier(p.theme.font.size, 1.5)};
     text-transform: uppercase;
-    height: 10em;
-    width: 30em;
+    height: 6em;
+    max-width: 30em;
+    min-width: 20em;
     margin: ${p => themeModifier(p.theme.baseline, 0.5)};
     resize: none;
+  }
+
+  @media screen and (max-width: ${p => p.theme.breakpoint.smallTablet}) {
+    textarea {
+      height: 4em;
+      min-width: 10em;
+    }
   }
 `;
 

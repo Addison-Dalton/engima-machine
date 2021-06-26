@@ -12,5 +12,11 @@ declare module 'styled-components' {
       size: string;
     }
     baseline: string;
+    breakpoint: {
+      smallDesktop: string;
+      tablet: string;
+      smallTablet: string;
+      mobile: string;
+    }
   }
 }
