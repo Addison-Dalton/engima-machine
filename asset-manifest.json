@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/engima-machine/static/css/main.c3326780.chunk.css",
-    "main.js": "/engima-machine/static/js/main.9901f963.chunk.js",
-    "main.js.map": "/engima-machine/static/js/main.9901f963.chunk.js.map",
+    "main.css": "/engima-machine/static/css/main.8ce93105.chunk.css",
+    "main.js": "/engima-machine/static/js/main.3a66c273.chunk.js",
+    "main.js.map": "/engima-machine/static/js/main.3a66c273.chunk.js.map",
     "runtime-main.js": "/engima-machine/static/js/runtime-main.43e5f98d.js",
     "runtime-main.js.map": "/engima-machine/static/js/runtime-main.43e5f98d.js.map",
     "static/js/2.34fded78.chunk.js": "/engima-machine/static/js/2.34fded78.chunk.js",
@@ -10,13 +10,13 @@
     "static/js/3.10c94c52.chunk.js": "/engima-machine/static/js/3.10c94c52.chunk.js",
     "static/js/3.10c94c52.chunk.js.map": "/engima-machine/static/js/3.10c94c52.chunk.js.map",
     "index.html": "/engima-machine/index.html",
-    "static/css/main.c3326780.chunk.css.map": "/engima-machine/static/css/main.c3326780.chunk.css.map",
+    "static/css/main.8ce93105.chunk.css.map": "/engima-machine/static/css/main.8ce93105.chunk.css.map",
     "static/js/2.34fded78.chunk.js.LICENSE.txt": "/engima-machine/static/js/2.34fded78.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.43e5f98d.js",
     "static/js/2.34fded78.chunk.js",
-    "static/css/main.c3326780.chunk.css",
-    "static/js/main.9901f963.chunk.js"
+    "static/css/main.8ce93105.chunk.css",
+    "static/js/main.3a66c273.chunk.js"
   ]
 }
