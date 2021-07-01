@@ -4,9 +4,10 @@ type Slot = {
   name: SlotName;
   rotor: Rotor;
   position: number;
-};
+  initialPosition: number;
+}
 
-type ChangeSlotPosition = {
-  slot: SlotName;
+type ChangeSlotPositionPayload = {
+  slotName: SlotName;
   position: number;
-};
+}

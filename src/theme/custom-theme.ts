@@ -4,7 +4,7 @@ export const theme: DefaultTheme = {
   borderRadius: '6px',
   colors: {
     white: 'white',
-    primary: 'red',
+    primary: '#2e1a2b',
     litLetter: '#7a7b3d'
   },
   font: {

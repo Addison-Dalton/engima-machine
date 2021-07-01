@@ -1,26 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { rotorI, rotorII, rotorIII, reflectorUKWB } from '../../objects/rotors/rotors';
-import { handleEncoding, handleRotation, resetSlots } from './utils';
+import { handleEncoding, handleRotation, resetSlots, getIsValidPosition } from './utils';
 
 const initialState: MachineStore = {
   slots: [
     {
       name: 'slot1',
       rotor: rotorI,
-      position: 0
+      position: 0,
+      initialPosition: 0
     }, {
       name: 'slot2',
       rotor: rotorII,
-      position: 0
+      position: 0,
+      initialPosition: 0
     }, {
       name: 'slot3',
       rotor: rotorIII,
-      position: 0
+      position: 0,
+      initialPosition: 0
     },
     {
       name: 'slot4',
       rotor: reflectorUKWB,
-      position: 0
+      position: 0,
+      initialPosition: 0
     }
   ],
   outputKey: '',
@@ -32,6 +36,13 @@ const slotSlice = createSlice({
   name: 'handleSlots',
   initialState,
   reducers: {
+    handleChangeInitialRotorPosition(state, action: PayloadAction<ChangeSlotPositionPayload>) {
+      const { slotName, position } = action.payload;
+      const slotIdx = state.slots.findIndex(s => s.name === slotName);
+      const positionIsValid = getIsValidPosition(position);
+      if (slotIdx < 0 || !positionIsValid) return;
+      state.slots[slotIdx].initialPosition = position;
+    },
     handleSingleRotorRotation(state, action: PayloadAction<string>) {
       const { slots } = state;
       const inputKey = action.payload;
@@ -74,7 +85,8 @@ const slotSlice = createSlice({
 
 export const {
   handleSingleRotorRotation,
-  handleFullRotorRotation
+  handleFullRotorRotation,
+  handleChangeInitialRotorPosition
 } = slotSlice.actions;
 
 export default slotSlice.reducer;

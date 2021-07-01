@@ -2,7 +2,8 @@ import { getAlphabetKeyByNum, getAlphabetKeyNum } from '../utils/keys';
 import { alphabet } from '../utils/array-alphabet';
 import { modulo } from '../utils/modulo';
 
-const getKeyNumWithPosition = (keyNum: number, position: number, op: 'add' | 'subtract') => {
+const getKeyNumWithPosition = (keyNum: number, slot: Slot, op: 'add' | 'subtract') => {
+  const position = modulo(slot.position + slot.initialPosition, alphabet.length);
   let keyNumOpsPosition;
   switch (op) {
     case 'add':
@@ -39,7 +40,7 @@ const encode = (slots: Slot[], initialKeyNum: number, isSecondPass?: boolean) =>
     console.log('-------------------------');
     console.log(`slot: ${slot.name} at position ${slot.position}. Given keyNum: ${keyNum}. Using rotor: ${slot.rotor.name}, with keys: ${slot.rotor.keys}`);
     if (keyNum < 0) return -1;
-    const inputKeyNumWithPosition = getKeyNumWithPosition(keyNum, slot.position, 'add');
+    const inputKeyNumWithPosition = getKeyNumWithPosition(keyNum, slot, 'add');
     const inputKeyLetter = getAlphabetKeyByNum(inputKeyNumWithPosition);
     const outputKeyNum = getOutputKeyNum(
       slot.rotor.keys,
@@ -49,8 +50,8 @@ const encode = (slots: Slot[], initialKeyNum: number, isSecondPass?: boolean) =>
     );
     console.log('Calc key as', getAlphabetKeyByNum(outputKeyNum));
     console.log('Key num is, ', outputKeyNum);
-    console.log('output key num with positiuon', getKeyNumWithPosition(outputKeyNum, slot.position, 'subtract'));
-    return getKeyNumWithPosition(outputKeyNum, slot.position, 'subtract');
+    console.log('output key num with positiuon', getKeyNumWithPosition(outputKeyNum, slot, 'subtract'));
+    return getKeyNumWithPosition(outputKeyNum, slot, 'subtract');
   }, initialKeyNum);
   return encodedKeyNum;
 };
@@ -88,3 +89,5 @@ export const resetSlots = (slots: Slot[]) => {
     slot.position = 0;
   });
 };
+
+export const getIsValidPosition = (position: number) => (position <= 25 && position >= 0);

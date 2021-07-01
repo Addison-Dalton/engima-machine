@@ -3,22 +3,17 @@ import styled from 'styled-components';
 
 import { KeyBoardController } from '../keyboard';
 import { InputOutputTextArea } from '../input-output-text';
+import { ControlsSidebar } from '../controls-sidebar';
 import { themeModifier } from '../../theme/utils';
 
 const $Container = styled.div`
   display: flex;
+  height: 100vh;
 `;
 
 const $MachineWrapper = styled.div`
   flex: 1;
-`;
-
-const $SidebarWrapper = styled.div`
-  flex: 0 0 ${p => themeModifier(p.theme.baseline, 10)};
-
-  @media screen and (max-width: 950px) {
-    display: none;
-  }
+  margin: ${p => themeModifier(p.theme.baseline, 1)};
 `;
 
 const $Header = styled.h1`
@@ -31,11 +26,8 @@ const $Header = styled.h1`
 
 const App = () => (
   <$Container>
-    <$SidebarWrapper>
-      <p>{'sidebar stuff here'}</p>
-    </$SidebarWrapper>
+    <ControlsSidebar />
     <$MachineWrapper>
-      <$Header>{'Enigma'}</$Header>
       <KeyBoardController />
       <InputOutputTextArea />
     </$MachineWrapper>
